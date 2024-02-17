@@ -24,19 +24,19 @@ class PrincipalComponentAnalysis:
       self.mean = np.mean(X, axis=0)
         
         # Let´s center our data points
-        centered_X = X - self.mean
+      centered_X = X - self.mean
         
         # Let´s compute the covariance matrix
-        covariance_matrix = np.cov(centered_X, rowvar=False)
+      covariance_matrix = np.cov(centered_X, rowvar=False)
         
         # Let´s Perform eigen decomposition
-        eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
+      eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
         
         # Let´s sort eigenvectors by decreasing eigenvalues and select top n_components
-        idx = np.argsort(eigenvalues)[::-1]
-        self.components = eigenvectors[:, idx[:self.n_components]]
+      idx = np.argsort(eigenvalues)[::-1]
+      self.components = eigenvectors[:, idx[:self.n_components]]
         
-        return self
+      return self
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         """
