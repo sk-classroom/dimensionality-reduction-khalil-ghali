@@ -20,21 +20,23 @@ class PrincipalComponentAnalysis:
 
     # TODO: implement the fit method
     def fit(self, X: np.ndarray):
-        """
-        Fit the model with X.
-
-        Parameters
-        ----------
-        X : ndarray of shape (n_samples, n_features)
-            Training data, where n_samples is the number of samples
-            and n_features is the number of features.
-
-        Returns
-        -------
-        self : object
-            Returns the instance itself.
-        """
-        pass
+    
+      self.mean = np.mean(X, axis=0)
+        
+        # Let´s center our data points
+        centered_X = X - self.mean
+        
+        # Let´s compute the covariance matrix
+        covariance_matrix = np.cov(centered_X, rowvar=False)
+        
+        # Let´s Perform eigen decomposition
+        eigenvalues, eigenvectors = np.linalg.eigh(covariance_matrix)
+        
+        # Let´s sort eigenvectors by decreasing eigenvalues and select top n_components
+        idx = np.argsort(eigenvalues)[::-1]
+        self.components = eigenvectors[:, idx[:self.n_components]]
+        
+        return self
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         """
@@ -53,7 +55,13 @@ class PrincipalComponentAnalysis:
         X_new : ndarray of shape (n_samples, n_components)
             Transformed values.
         """
-        pass
+        # Let´s center the new data using the mean from the training set
+        centered_X = X - self.mean
+        
+        # Let´s project the centered data onto the selected eigenvectors
+        X_new = np.dot(centered_X, self.components)
+        
+        return X_new
 
 
 # TODO: implement the LDA with numpy
@@ -91,7 +99,46 @@ class LinearDiscriminantAnalysis:
         5. Sort the eigenvectors by decreasing eigenvalues and choose k eigenvectors with the largest eigenvalues to form a d×k dimensional matrix W.
         6. Use this d×k eigenvector matrix to transform the samples onto the new subspace.
         """
-        pass
+        # Here we compute the mean vectors for each class
+        self.mean = np.mean(X, axis=0)
+        unique_classes = np.unique(y)
+        n_features = X.shape[1]
+
+        mean_vectors = []
+        for cls in unique_classes:
+            mean_vectors.append(np.mean(X[y == cls], axis=0))
+
+        mean_vectors = np.array(mean_vectors)
+
+        # Computing the within-class scatter matrix
+        within_class_scatter_matrix = np.zeros((n_features, n_features))
+        for cls, mean_vec in zip(unique_classes, mean_vectors):
+            class_scatter_matrix = np.zeros((n_features, n_features))
+            for row in X[y == cls]:
+                row, mean_vec = row.reshape(n_features, 1), mean_vec.reshape(n_features, 1)
+                class_scatter_matrix += (row - mean_vec).dot((row - mean_vec).T)
+            within_class_scatter_matrix += class_scatter_matrix
+
+        # Let´s compute the between-class scatter matrix
+        overall_mean = np.mean(X, axis=0)
+        between_class_scatter_matrix = np.zeros((n_features, n_features))
+        for i, mean_vec in enumerate(mean_vectors):
+            n = X[y == unique_classes[i]].shape[0]
+            mean_vec = mean_vec.reshape(n_features, 1)
+            overall_mean = overall_mean.reshape(n_features, 1)
+            between_class_scatter_matrix += n * (mean_vec - overall_mean).dot((mean_vec - overall_mean).T)
+
+        # next we Compute eigenvectors and eigenvalues
+        eigenvalues, eigenvectors = np.linalg.eig(np.linalg.inv(within_class_scatter_matrix).dot(between_class_scatter_matrix))
+
+        # Then sort eigenvectors by decreasing eigenvalues
+        idx = np.argsort(eigenvalues)[::-1]
+        eigenvectors = eigenvectors[:, idx]
+
+        # and choose k eigenvectors with the largest eigenvalues
+        self.components = eigenvectors[:, :self.n_components]
+
+        return self
 
     def transform(self, X: np.ndarray) -> np.ndarray:
         """
@@ -110,7 +157,9 @@ class LinearDiscriminantAnalysis:
         X_new : ndarray of shape (n_samples, n_components)
             Transformed values.
         """
-        pass
+        X_new = np.dot(X - self.mean, self.components)
+
+        return X_new
 
 
 # TODO: Generating adversarial examples for PCA.
@@ -145,4 +194,6 @@ class AdversarialExamples:
             Cluster IDs. y[i] is the cluster ID of the i-th sample.
 
         """
-        pass
+        
+        # Let´s generate two clusters in a 2D space
+     
