@@ -195,18 +195,19 @@ class AdversarialExamples:
 
         """
         # Generate two clusters in a 2D space
-        cluster1_mean = np.array([0, 0])  # Mean of cluster 1
-        cluster1_cov = np.array([[1, 0.1], [0.1, 1]])  # Covariance matrix of cluster 1 (reduced overlap)
-        cluster1_samples = np.random.multivariate_normal(cluster1_mean, cluster1_cov, n_samples)
+        mean1 = np.array([2, 2])  # Mean of cluster 1
+        cov1 = np.array([[1, 0.5], [0.5, 1]])  # Covariance matrix of cluster 1
+        cluster1 = np.random.multivariate_normal(mean1, cov1, n_samples)
 
-        cluster2_mean = np.array([0, 0])  # Mean of cluster 2
-        cluster2_cov = np.array([[1, 0.1], [0.1, 1]])  # Covariance matrix of cluster 2 (reduced overlap)
-        cluster2_samples = np.random.multivariate_normal(cluster2_mean, cluster2_cov, n_samples)
+        # Generate samples for cluster 2
+        mean2 = np.array([-2, -2])  # Mean of cluster 2
+        cov2 = np.array([[1, -0.5], [-0.5, 1]])  # Covariance matrix of cluster 2
+        cluster2 = np.random.multivariate_normal(mean2, cov2, n_samples)
 
         # Concatenate samples from both clusters
-        X = np.vstack((cluster1_samples, cluster2_samples))
+        X = np.concatenate((cluster1, cluster2), axis=0)
 
-        # Generate cluster labels
-        y = np.hstack((np.zeros(n_samples), np.ones(n_samples)))
+        # Create labels for clusters
+        y = np.concatenate((np.zeros(n_samples), np.ones(n_samples)))
 
         return X, y
