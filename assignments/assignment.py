@@ -196,12 +196,12 @@ class AdversarialExamples:
         """
        
         # Let´s generate two well-separated clusters in 2D space
-        mean1 = np.array([5, 5]) 
-        cov1 = np.identity(n_features)
+        mean1 = np.array([5, 5])
+        cov1 = np.identity(n_features) 
         cluster1 = np.random.multivariate_normal(mean1, cov1, n_samples//2)
         
-        mean2 = np.array([-5, -5])
-        cov2 = np.identity(n_features) 
+        mean2 = np.array([-5, -5]) 
+        cov2 = np.identity(n_features)
         cluster2 = np.random.multivariate_normal(mean2, cov2, n_samples//2)
         
         X = np.concatenate([cluster1, cluster2], axis=0)
