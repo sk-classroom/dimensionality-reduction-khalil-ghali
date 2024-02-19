@@ -209,6 +209,6 @@ class AdversarialExamples:
         y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
         """
         centers = [[-3, 0], [3, 0]]  # Adjusted centers to ensure separation
-        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=centers, cluster_std=1.0
+        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=centers, cluster_std=1.0)
         
         return X,y
