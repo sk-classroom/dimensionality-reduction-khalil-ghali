@@ -206,8 +206,5 @@ class AdversarialExamples:
         X = np.concatenate((cluster1_samples, cluster2_samples))
         y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
 
-        # now we apply PCA transformation
-        pca = PCA(n_components=1)
-        X_transformed = pca.fit_transform(X)
 
-        return X_transformed, y
+        return X,y
