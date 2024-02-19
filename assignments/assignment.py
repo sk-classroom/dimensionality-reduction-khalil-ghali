@@ -196,17 +196,25 @@ class AdversarialExamples:
         """
        
         # Let´s generate two well-separated clusters in 2D space
-        
-        cluster1_mean = np.array([0, 0])
-        cluster1_cov = np.array([[1, 0.5], [0.5, 1]])
-        cluster1_samples = np.random.multivariate_normal(cluster1_mean, cluster1_cov, n_samples // 2)
+        mean1 = np.array([1, 1])
+        cov1 = np.array([[1, 0], [0, 1]])
+        cluster1_samples = np.random.multivariate_normal(mean1, cov1, n_samples // 2)
 
-        cluster2_mean = np.array([0.3, 0.3])  # Adjusted mean to introduce overlap
-        cluster2_cov = np.array([[1, 0.5], [0.5, 1]])
-        cluster2_samples = np.random.multivariate_normal(cluster2_mean, cluster2_cov, n_samples // 2)
+        # Generate samples for cluster 2
+        mean2 = np.array([5, 5])
+        cov2 = np.array([[1, 0], [0, 1]])
+        cluster2_samples = np.random.multivariate_normal(mean2, cov2, n_samples // 2)
 
-        X = np.concatenate((cluster1_samples, cluster2_samples))
-        y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
-       
+        # Combine samples from both clusters
+        X = np.concatenate([cluster1_samples, cluster2_samples], axis=0)
+
+        # Create labels for the clusters
+        y = np.concatenate([np.zeros(n_samples // 2), np.ones(n_samples // 2)], axis=0)
+
+        # Shuffle the data
+        indices = np.arange(n_samples)
+        np.random.shuffle(indices)
+        X = X[indices]
+        y = y[indices]
 
         return X, y
