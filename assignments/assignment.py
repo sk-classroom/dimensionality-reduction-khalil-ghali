@@ -194,20 +194,20 @@ class AdversarialExamples:
             Cluster IDs. y[i] is the cluster ID of the i-th sample.
 
         """
-        # Generate two clusters in a 2D space
-        mean1 = np.array([2, 2])  # Mean of cluster 1
-        cov1 = np.array([[1, 0.5], [0.5, 1]])  # Covariance matrix of cluster 1
-        cluster1 = np.random.multivariate_normal(mean1, cov1, n_samples)
+        # Let´s generate two well-separated clusters in 2D space
+        cluster1_mean = np.array([0, 0])
+        cluster1_cov = np.array([[1, 0.5], [0.5, 1]])
+        cluster1_samples = np.random.multivariate_normal(cluster1_mean, cluster1_cov, n_samples // 2)
 
-        # Generate samples for cluster 2
-        mean2 = np.array([-2, -2])  # Mean of cluster 2
-        cov2 = np.array([[1, -0.5], [-0.5, 1]])  # Covariance matrix of cluster 2
-        cluster2 = np.random.multivariate_normal(mean2, cov2, n_samples)
+        cluster2_mean = np.array([5, 5])
+        cluster2_cov = np.array([[1, 0.5], [0.5, 1]])
+        cluster2_samples = np.random.multivariate_normal(cluster2_mean, cluster2_cov, n_samples // 2)
 
-        # Concatenate samples from both clusters
-        X = np.concatenate((cluster1, cluster2), axis=0)
+        X = np.concatenate((cluster1_samples, cluster2_samples))
+        y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
 
-        # Create labels for clusters
-        y = np.concatenate((np.zeros(n_samples), np.ones(n_samples)))
+        # now we apply PCA transformation
+        pca = PCA(n_components=1)
+        X_transformed = pca.fit_transform(X)
 
-        return X, y
+        return X_transformed, y
