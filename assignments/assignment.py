@@ -208,5 +208,8 @@ class AdversarialExamples:
         X = np.concatenate((cluster1_samples, cluster2_samples))
         y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
         """
-        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=2, cluster_std=1.0)
+        centers = [[-separation_factor, 0], [separation_factor, 0]]
+        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=centers, cluster_std=1.0)
+        
+        return X, y
         return X,y
