@@ -194,7 +194,9 @@ class AdversarialExamples:
             Cluster IDs. y[i] is the cluster ID of the i-th sample.
 
         """
+       
         # Let´s generate two well-separated clusters in 2D space
+        """
         cluster1_mean = np.array([0, 0])
         cluster1_cov = np.array([[1, 0.5], [0.5, 1]])
         cluster1_samples = np.random.multivariate_normal(cluster1_mean, cluster1_cov, n_samples // 2)
@@ -205,6 +207,6 @@ class AdversarialExamples:
 
         X = np.concatenate((cluster1_samples, cluster2_samples))
         y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
-
-
+        """
+        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=2, cluster_std=1.0)
         return X,y
