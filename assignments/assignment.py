@@ -175,7 +175,7 @@ class AdversarialExamples:
     def __init__(self) -> None:
         pass
 
-    def pca_adversarial_data(self, n_samples, n_features, separation_factor=1.0):
+    def pca_adversarial_data(self, n_samples, n_features):
         """Generate adversarial examples for PCA
 
         Parameters
@@ -196,25 +196,15 @@ class AdversarialExamples:
         """
        
         # Let´s generate two well-separated clusters in 2D space
-        mean1 = np.array([1, 1])
-        cov1 = np.array([[1, 0], [0, 1]])
-        cluster1_samples = np.random.multivariate_normal(mean1, cov1, n_samples // 2)
-
-        # Generate samples for cluster 2
-        mean2 = np.array([5, 5])
-        cov2 = np.array([[1, 0], [0, 1]])
-        cluster2_samples = np.random.multivariate_normal(mean2, cov2, n_samples // 2)
-
-        # Combine samples from both clusters
-        X = np.concatenate([cluster1_samples, cluster2_samples], axis=0)
-
-        # Create labels for the clusters
-        y = np.concatenate([np.zeros(n_samples // 2), np.ones(n_samples // 2)], axis=0)
-
-        # Shuffle the data
-        indices = np.arange(n_samples)
-        np.random.shuffle(indices)
-        X = X[indices]
-        y = y[indices]
+        mean1 = np.array([5, 5]) 
+        cov1 = np.identity(n_features)
+        cluster1 = np.random.multivariate_normal(mean1, cov1, n_samples//2)
+        
+        mean2 = np.array([-5, -5])
+        cov2 = np.identity(n_features) 
+        cluster2 = np.random.multivariate_normal(mean2, cov2, n_samples//2)
+        
+        X = np.concatenate([cluster1, cluster2], axis=0)
+        y = np.hstack([np.zeros(n_samples//2), np.ones(n_samples//2)])
 
         return X, y
