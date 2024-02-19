@@ -199,7 +199,7 @@ class AdversarialExamples:
         cluster1_cov = np.array([[1, 0.5], [0.5, 1]])
         cluster1_samples = np.random.multivariate_normal(cluster1_mean, cluster1_cov, n_samples // 2)
 
-        cluster2_mean = np.array([5, 5])
+        cluster2_mean = np.array([0.5, 0.5])
         cluster2_cov = np.array([[1, 0.5], [0.5, 1]])
         cluster2_samples = np.random.multivariate_normal(cluster2_mean, cluster2_cov, n_samples // 2)
 
