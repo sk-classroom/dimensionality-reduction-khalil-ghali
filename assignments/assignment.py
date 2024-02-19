@@ -208,7 +208,25 @@ class AdversarialExamples:
         X = np.concatenate((cluster1_samples, cluster2_samples))
         y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
         """
-        centers = [[-3, 0], [3, 0]]  # Adjusted centers to ensure separation
-        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=centers, cluster_std=1.0)
-        
-        return X,y
+        mean1 = np.array([1, 1])
+        cov1 = np.array([[1, 0.5], [0.5, 1]])
+        cluster1_samples = np.random.multivariate_normal(mean1, cov1, n_samples // 2)
+
+        # Generate samples for cluster 2
+        mean2 = np.array([4, 4])
+        cov2 = np.array([[1, -0.5], [-0.5, 1]])
+        cluster2_samples = np.random.multivariate_normal(mean2, cov2, n_samples // 2)
+
+        # Combine samples from both clusters
+        X = np.concatenate([cluster1_samples, cluster2_samples], axis=0)
+
+        # Create labels for the clusters
+        y = np.concatenate([np.zeros(n_samples // 2), np.ones(n_samples // 2)], axis=0)
+
+        # Shuffle the data
+        indices = np.arange(n_samples)
+        np.random.shuffle(indices)
+        X = X[indices]
+        y = y[indices]
+
+        return X, y
