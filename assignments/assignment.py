@@ -175,7 +175,7 @@ class AdversarialExamples:
     def __init__(self) -> None:
         pass
 
-    def pca_adversarial_data(self, n_samples, n_features):
+    def pca_adversarial_data(self, n_samples, n_features, separation_factor=1.0):
         """Generate adversarial examples for PCA
 
         Parameters
@@ -208,8 +208,7 @@ class AdversarialExamples:
         X = np.concatenate((cluster1_samples, cluster2_samples))
         y = np.concatenate((np.zeros(n_samples // 2), np.ones(n_samples // 2)))
         """
-        centers = [[-separation_factor, 0], [separation_factor, 0]]
-        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=centers, cluster_std=1.0)
+        centers = [[-3, 0], [3, 0]]  # Adjusted centers to ensure separation
+        X, y = make_blobs(n_samples=n_samples, n_features=n_features, centers=centers, cluster_std=1.0
         
-        return X, y
         return X,y
